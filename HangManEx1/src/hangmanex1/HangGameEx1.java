@@ -1,12 +1,17 @@
 package hangmanex1;
 
 import java.util.Random;
+import java.util.Arrays;  
+import java.util.List;  
+import java.util.ArrayList;
+
 import javax.swing.*;
 public class HangGameEx1 extends javax.swing.JFrame {
     static boolean terminate = false;
+    boolean LetterValidity = true;
     static int w = 0, l = 0;
     String word = "", clue = "", guess = "";
-    int option;
+    int option, NoOfEnteries=0;
     public HangGameEx1() {
         initComponents();
     }
@@ -28,7 +33,6 @@ public class HangGameEx1 extends javax.swing.JFrame {
         jRadioButton5 = new javax.swing.JRadioButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -118,15 +122,10 @@ public class HangGameEx1 extends javax.swing.JFrame {
                 .addComponent(jRadioButton5)
                 .addContainerGap(99, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(94, 94, 94)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton2)
-                            .addComponent(jButton1)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(94, 94, 94)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37))
@@ -158,9 +157,7 @@ public class HangGameEx1 extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -304,7 +301,7 @@ public class HangGameEx1 extends javax.swing.JFrame {
             int len = (int)(Math.round(((double)guessword.length()/2)));
             int checkguess = 0;
 
-            StringBuffer guessit = new StringBuffer(); // show me what is
+            StringBuffer guessit = new StringBuffer(); 
             
             // Places a blank underscore to signify the presence of a letter
             for (int i = 0;i<len;i++)
@@ -341,10 +338,7 @@ public class HangGameEx1 extends javax.swing.JFrame {
                 display1.append(clue);
                 display1.append("\nEnter your guess letter\n\n");
                 guess = JOptionPane.showInputDialog("Enter a alphabet");
-//                if(guess.length()>1)
-//                {
-//                    JOptionPane.showMessageDialog(this,"Please enter 1 letter","WARNING",1);
-//                }
+                
                 do{
                     if(!(guess.equals("")||guess.length()>1))
                     {
@@ -358,9 +352,10 @@ public class HangGameEx1 extends javax.swing.JFrame {
                         flag = false;
                     }
                 }while(flag == false);
-                guess = guess.toUpperCase();
-//                guess = Character.toString(guess.charAt(0));
                 
+                guess = guess.toUpperCase(); 
+                ValidLetter();
+                NoOfEnteries++;
 
                 for(int i = 0;i<len;i++)    
                 {
@@ -423,10 +418,6 @@ public class HangGameEx1 extends javax.swing.JFrame {
         
         }
         
-            
-            
-
-
         //Function to call Sports Questions
     public String[] Sports()
     {
@@ -653,6 +644,40 @@ public class HangGameEx1 extends javax.swing.JFrame {
         display2.append("__|_____ ");
     }
     
+    public void ValidLetter()
+    {
+        
+       //String[][] LetterCheck = new String[27][27];  
+        
+        char [] LetterCheck = new char[27];
+       for(int k=0;k<NoOfEnteries;k++)
+       {
+          
+           while (LetterValidity){
+           //check if letter is seen
+           if(LetterCheck[k]==(guess.charAt(0)))  //seen==true
+            {
+                //give Error as its already there
+                LetterValidity = false;
+            }
+           else // seen==false
+           {
+              LetterValidity = true;
+              break;
+           }
+       }    
+       }
+       if(!LetterValidity)
+       {
+        JOptionPane.showMessageDialog(this,"Please enter a new Alphabet","WARNING",1);
+       }
+       if(LetterValidity)
+       {
+        LetterCheck[NoOfEnteries] = guess.charAt(0); 
+       }
+                      
+    }
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
@@ -668,6 +693,5 @@ public class HangGameEx1 extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }
